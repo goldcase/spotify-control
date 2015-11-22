@@ -122,10 +122,6 @@ def tell_spotify(this):
         if case():
             print "Unrecognized command. Please try again."
             return
-#        if case("shuffle"):
-#            spotify_do.format("shuffling enabled")
-#            break
-
 
     if output:
         printed = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
