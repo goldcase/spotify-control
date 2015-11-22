@@ -56,8 +56,7 @@ def help_message():
         skip
         next
         previous
-        count current
-        output current
+        current
         louder
         softer
         mute
@@ -71,26 +70,27 @@ def tell_spotify(this):
     """
     check_and_open_spotify()
 
-    spotify_do = """osascript -e 'tell application "Spotify" to {0}'"""
+    command.append(['osascript', '-e']
+    spotify_do = 'tell application "Spotify" to {0}'
 
     for case in switch(this):
         if case("play"):
-            command = spotify_do.format("play")
+            command.append(spotify_do.format("play"))
             break
         if case("pause"):
-            command = spotify_do.format("pause")
+            command.append(spotify_do.format("pause"))
             break
         if case("skip") or case("next"):
-            command = spotify_do.format("next track")
+            command.append(spotify_do.format("next track"))
             break
         if case("previous"):
-            command = spotify_do.format("previous track")
+            command.append(spotify_do.format("previous track"))
             break
-        if case("count current"):
-            command = spotify_do.format("played count of current track")
+        if case("current"):
+            command.append(spotify_do.format("set output to name of current track & \" by \" & artist of current track"))
             break
-        if case("output current"):
-            command = spotify_do.format("set output to name of current track & \" by \" & artist of current track")
+        if case("popularity"):
+            command.append(spotify_do.format("popularity of current track"))
             break
         if case("louder"):
             break
