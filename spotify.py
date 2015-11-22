@@ -57,10 +57,14 @@ def help_message():
         next
         previous
         current
+        popularity
         louder
         softer
         mute
         unmute
+        shuffle
+        unshuffle
+        quit
         """
 
 def tell_spotify(this):
