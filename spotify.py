@@ -42,7 +42,7 @@ def check_and_open_spotify():
     """
     out = subprocess.check_output(['osascript', '-e', 'application "Spotify" is running'])
     if out == "false":
-        subprocess.call(['osascript', '-e', 'tell application "Spotify" to activate'])
+        subprocess.call(['osascript', '-e', 'tell application "Spotify" to activate'], shell=True)
         write_to_log("OPENED SPOTIFY")
 
 def help_message():
@@ -100,15 +100,20 @@ def tell_spotify(this):
             break
         if case("unmute"):
             break
+        if case():
+            print "Unrecognized command. Please try again."
+            return
 #        if case("shuffle"):
 #            spotify_do.format("shuffling enabled")
 #            break
 
-    subprocess.call(command, shell=True)
+    output = subprocess.check_output(command, shell=True)
     write_to_log("EXECUTED `{0}` ON REQUEST `{1}`".format(command, this))
+    if len(output) > 0:
+        print output
+        write_to_log("OUTPUTTED {0}".format(output))
 
 print "Hello, {0}. Anything you want me to do today?\n".format(NAME)
-
 while 1:
     cmd = raw_input("Enter your command, or `help` if you don't know anything: \n").lower()
     if cmd == "help":
