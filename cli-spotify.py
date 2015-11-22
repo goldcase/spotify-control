@@ -111,12 +111,16 @@ def tell_spotify(this):
         if case("quit"):
             exit(0)
             break
+        if case("help"):
+            print help_message()
+            return
         if case():
             print "Unrecognized command. Please try again."
             return
 
     if output:
         printed = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
+        print printed
     else:
         subprocess.call(command, shell=True)
 
