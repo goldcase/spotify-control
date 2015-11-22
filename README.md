@@ -17,3 +17,6 @@ Available commands:
 - quit
 
 Mac OS X only.
+
+`spotify.py` runs in a loop.
+`cli-spotify.py` is a command line utility, so I can alias it and change Spotify based on command line args.
