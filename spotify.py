@@ -93,12 +93,16 @@ def tell_spotify(this):
             command.append(spotify_do.format("popularity of current track"))
             break
         if case("louder"):
+            command.append(spotify_do.format("set sound volume to sound volume + 10"))
             break
         if case("softer"):
+            command.append(spotify_do.format("set sound volume to sound volume - 10"))
             break
         if case("mute"):
+            command.append(spotify_do.format("set sound volume to 0"))
             break
         if case("unmute"):
+            command.append(spotify_do.format("set sound volume to 100"))
             break
         if case():
             print "Unrecognized command. Please try again."
