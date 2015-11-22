@@ -5,16 +5,24 @@ import subprocess, datetime
 __author__ = "Johnny Chang"
 
 def write_to_log(string):
+    """
+    Writes to log with current time.
+    """
     with open("spotify.log", "a") as f:
         f.write("{0}:\t{1}".format(datetime.datetime.now(), string))
 
 class switch(object):
+    """
+    Class to emulate switch statements.
+    """
     def __init__(self, value):
         self.value = value
         self.fall = False
 
     def __iter__(self):
-        """Return the match method once."""
+        """
+        Return the match method once.
+        """
         yield self.match
         raise StopIteration
 
@@ -28,12 +36,19 @@ class switch(object):
             return False
 
 def check_and_open_spotify():
+    """
+    Opens Spotify if it isn't already open.
+    """
     out = subprocess.check_output(['osascript', '-e', 'application "Spotify" is running'])
     if out == "false":
         subprocess.call(['osascript', '-e', 'tell application "Spotify" to activate'])
         write_to_log("OPENED SPOTIFY")
 
 def tell_spotify(this):
+    """
+    Wrapper around certain commands for Spotify.
+    play, pause, skip, etc.
+    """
     check_and_open_spotify()
 
     spotify_do = """osascript -e 'tell application "Spotify" to {0}'"""
