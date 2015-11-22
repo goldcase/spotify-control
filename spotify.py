@@ -70,7 +70,7 @@ def tell_spotify(this):
     """
     check_and_open_spotify()
 
-    command.append(['osascript', '-e']
+    command.append(['osascript', '-e'])
     spotify_do = 'tell application "Spotify" to {0}'
 
     for case in switch(this):
@@ -103,6 +103,12 @@ def tell_spotify(this):
             break
         if case("unmute"):
             command.append(spotify_do.format("set sound volume to 100"))
+            break
+        if case("shuffle"):
+            command.append(spotify_do.format("set shuffling to true"))
+            break
+        if case("unshuffle"):
+            command.append(spotify_do.format("set shuffling to false"))
             break
         if case():
             print "Unrecognized command. Please try again."
