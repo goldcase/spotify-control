@@ -3,13 +3,14 @@
 import subprocess, datetime
 
 __author__ = "Johnny Chang"
+NAME = "Johnny"
 
 def write_to_log(string):
     """
     Writes to log with current time.
     """
     with open("spotify.log", "a") as f:
-        f.write("{0}:\t{1}".format(datetime.datetime.now(), string))
+        f.write("{0}:\t{1}\n".format(datetime.datetime.now(), string))
 
 class switch(object):
     """
@@ -43,6 +44,25 @@ def check_and_open_spotify():
     if out == "false":
         subprocess.call(['osascript', '-e', 'tell application "Spotify" to activate'])
         write_to_log("OPENED SPOTIFY")
+
+def help_message():
+    """
+    Returns available commands.
+    """
+    return """The available commands are:
+        help (you know this already)
+        play
+        pause
+        skip
+        next
+        previous
+        count current
+        output current
+        louder
+        softer
+        mute
+        unmute
+        """
 
 def tell_spotify(this):
     """
@@ -87,4 +107,11 @@ def tell_spotify(this):
     subprocess.call(command, shell=True)
     write_to_log("EXECUTED `{0}` ON REQUEST `{1}`".format(command, this))
 
-tell_spotify("skip")
+print "Hello, {0}. Anything you want me to do today?\n".format(NAME)
+
+while 1:
+    cmd = raw_input("Enter your command, or `help` if you don't know anything: \n").lower()
+    if cmd == "help":
+        print help_message()
+    else:
+        tell_spotify(cmd)
