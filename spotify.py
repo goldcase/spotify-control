@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import os, datetime
+import subprocess, datetime
 
 __author__ = "Johnny Chang"
 
@@ -27,8 +27,17 @@ class switch(object):
         else:
             return False
 
+def check_and_open_spotify():
+    out = subprocess.check_output(['osascript', '-e', 'application "Spotify" is running'])
+    if out == "false":
+        subprocess.call(['osascript', '-e', 'tell application "Spotify" to activate'])
+        write_to_log("OPENED SPOTIFY")
+
 def tell_spotify(this):
+    check_and_open_spotify()
+
     spotify_do = """osascript -e 'tell application "Spotify" to {0}'"""
+
     for case in switch(this):
         if case("play"):
             command = spotify_do.format("play")
@@ -47,11 +56,20 @@ def tell_spotify(this):
             break
         if case("output current"):
             command = spotify_do.format("set output to name of current track & \" by \" & artist of current track")
+            break
+        if case("louder"):
+            break
+        if case("softer"):
+            break
+        if case("mute"):
+            break
+        if case("unmute"):
+            break
 #        if case("shuffle"):
 #            spotify_do.format("shuffling enabled")
 #            break
 
-    os.system(command)
+    subprocess.call(command, shell=True)
     write_to_log("EXECUTED `{0}` ON REQUEST `{1}`".format(command, this))
 
 tell_spotify("skip")
