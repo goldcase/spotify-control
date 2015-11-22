@@ -70,45 +70,50 @@ def tell_spotify(this):
     """
     check_and_open_spotify()
 
-    command.append(['osascript', '-e'])
-    spotify_do = 'tell application "Spotify" to {0}'
+    spotify_do = """osascript -e 'tell application "Spotify" to {0}'"""
+    output = 0
 
     for case in switch(this):
         if case("play"):
-            command.append(spotify_do.format("play"))
+            command = spotify_do.format("play")
             break
         if case("pause"):
-            command.append(spotify_do.format("pause"))
+            command = spotify_do.format("pause")
             break
         if case("skip") or case("next"):
-            command.append(spotify_do.format("next track"))
+            command = spotify_do.format("next track")
             break
         if case("previous"):
-            command.append(spotify_do.format("previous track"))
+            command = spotify_do.format("previous track")
             break
         if case("current"):
-            command.append(spotify_do.format("set output to name of current track & \" by \" & artist of current track"))
+            output = 1
+            command = spotify_do.format("set output to name of current track & \" by \" & artist of current track")
             break
         if case("popularity"):
-            command.append(spotify_do.format("popularity of current track"))
+            output = 1
+            command = spotify_do.format("popularity of current track")
             break
         if case("louder"):
-            command.append(spotify_do.format("set sound volume to sound volume + 10"))
+            command = spotify_do.format("set sound volume to sound volume + 10")
             break
         if case("softer"):
-            command.append(spotify_do.format("set sound volume to sound volume - 10"))
+            command = spotify_do.format("set sound volume to sound volume - 10")
             break
         if case("mute"):
-            command.append(spotify_do.format("set sound volume to 0"))
+            command = spotify_do.format("set sound volume to 0")
             break
         if case("unmute"):
-            command.append(spotify_do.format("set sound volume to 100"))
+            command = spotify_do.format("set sound volume to 100")
             break
         if case("shuffle"):
-            command.append(spotify_do.format("set shuffling to true"))
+            command = spotify_do.format("set shuffling to true")
             break
         if case("unshuffle"):
-            command.append(spotify_do.format("set shuffling to false"))
+            command = spotify_do.format("set shuffling to false")
+            break
+        if case("quit"):
+            exit(0)
             break
         if case():
             print "Unrecognized command. Please try again."
@@ -117,11 +122,16 @@ def tell_spotify(this):
 #            spotify_do.format("shuffling enabled")
 #            break
 
-    output = subprocess.check_output(command, shell=True)
+
+    if output:
+        printed = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
+    else:
+        subprocess.call(command, shell=True)
+
     write_to_log("EXECUTED `{0}` ON REQUEST `{1}`".format(command, this))
-    if len(output) > 0:
-        print output
-        write_to_log("OUTPUTTED {0}".format(output))
+
+    if output and len(printed) > 0:
+        write_to_log("OUTPUTTED {0}".format(printed))
 
 print "Hello, {0}. Anything you want me to do today?\n".format(NAME)
 while 1:
